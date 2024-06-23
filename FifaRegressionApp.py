@@ -17,6 +17,10 @@ import pickle as pkl
 # Initialize session state
 if "button_clicked" not in st.session_state:
     st.session_state.button_clicked = False
+if "model" not in st.session_state:
+    st.session_state.model = None
+if "scaler" not in st.session_state:
+    st.session_state.scaler = None
     
 modelPath = Path("./models/FifaRandomForestRegressor.pkl")
 
