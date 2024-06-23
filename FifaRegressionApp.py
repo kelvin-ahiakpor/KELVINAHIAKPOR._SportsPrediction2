@@ -11,36 +11,10 @@ import streamlit as st
 import requests
 import pickle as pkl
 
-# Function to download file from URL
-def download_file_from_onedrive(url, output_path):
-    response = requests.get(url)
-    with open(output_path, 'wb') as f:
-        f.write(response.content)
-
-# Define the OneDrive URL of the file
-onedrive_url = 'https://drive.usercontent.google.com/download?id=1AyuTPmyG2krfC2WDzN5GzT55phSWX6oA&authuser=0'
-
-# Path where you want to save the downloaded file
-output_path = './try/FifaRandomForestRegressor.pkl'
-
-# Download the file
-download_file_from_onedrive(onedrive_url, output_path)
-
-# Load the model
-try:
-    with open(output_path, 'rb') as model_file:
-        model = pkl.load(model_file)
-    st.write("Model loaded successfully!")
-except Exception as e:
-    st.error(f"Error loading the model: {e}")
 
 # Load the trained model
-with open("/Users/kelvin/Library/CloudStorage/OneDrive-AshesiUniversity/ASHESI/2ND YEAR/SEM 2/AI/assignments/assignment 2/models/FifaRandomForestRegressor.pkl", "rb") as model_file:
+with open("/Users/kelvin/Library/CloudStorage/OneDrive-AshesiUniversity/ASHESI/2ND YEAR/SEM 2/AI/assignments/final _model/FifaRandomForestRegressor.pkl", "rb") as model_file:
     model = pkl.load(model_file)
-
-# # Load the imputer
-# with open("./imputer.pkl", "rb") as imputer_file:
-#     imputer = pkl.load(imputer_file)
 
 # Load the scaler
 with open("/Users/kelvin/Library/CloudStorage/OneDrive-AshesiUniversity/ASHESI/2ND YEAR/SEM 2/AI/assignments/assignment 2/scaler.pkl", "rb") as scaler_file:
@@ -62,20 +36,7 @@ def predict_overall(player_data):
 
     selected_features = ['log_value_eur', 'log_release_clause_eur', 'movement_reactions', 'log_wage_eur', 'potential', 'wage_eur', 'passing_dribbling_interaction', 'value_eur', 'passing']
     player_features = player_features[selected_features]
-
-    # Make predictions
-    predicted_rating = model.predict(player_features)
-
-    margin_of_error = 1.96 * 0.44
-
-    lower_bound = predicted_rating - margin_of_error
-    upper_bound = predicted_rating + margin_of_error
-
-    confidence_score = 1 / margin_of_error 
-
-#     # Impute missing values using the loaded imputer
-#     player_features_imputed = imputer.transform(player_features)
-
+    
     # Scale the input data using the loaded scaler
     X_scaled = scaler.transform(player_features)
 
@@ -86,7 +47,7 @@ def predict_overall(player_data):
 
     lower_bound = predicted_rating - margin_of_error
     upper_bound = predicted_rating + margin_of_error
-    
+
     confidence_score = 1 / margin_of_error 
 
     return predicted_rating[0], lower_bound[0], upper_bound[0], confidence_score
