@@ -1,4 +1,5 @@
 from pathlib import Path
+from dill import load, loads
 
 import streamlit as st
 import pandas as pd
