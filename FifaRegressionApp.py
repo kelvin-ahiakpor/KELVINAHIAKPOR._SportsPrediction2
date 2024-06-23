@@ -13,11 +13,11 @@ import pickle as pkl
 
 
 # Load the trained model
-with open("/Users/kelvin/Library/CloudStorage/OneDrive-AshesiUniversity/ASHESI/2ND YEAR/SEM 2/AI/assignments/final _model/FifaRandomForestRegressor.pkl", "rb") as model_file:
+with open("./models/FifaRandomForestRegressor.pkl", "rb") as model_file:
     model = pkl.load(model_file)
 
 # Load the scaler
-with open("/Users/kelvin/Library/CloudStorage/OneDrive-AshesiUniversity/ASHESI/2ND YEAR/SEM 2/AI/assignments/assignment 2/scaler.pkl", "rb") as scaler_file:
+with open("scaler.pkl", "rb") as scaler_file:
     scaler = pkl.load(scaler_file)
 
 # Function to preprocess input data and predict using the trained model
