@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -11,10 +13,26 @@ import streamlit as st
 import requests
 import pickle as pkl
 
+modelPath = Path("./models/FifaRandomForestRegressor.pkl")
 
+#function to load parts
+def loadParts(prefix, src):
+    src = Path(src)
+    combined = b""
+    parts = []
+    for file in src.glob("*.pkl"):
+        if file.stem.startswith(prefix):
+            parts.append(file)
+    parts.sort(key=lambda part: int(part.stem.split("-")[-1]))
+
+    for part in parts:
+        with open(part, "rb") as f:
+            combined += f.read()
+
+    return loads(combined)
+    
 # Load the trained model
-with open("./models/FifaRandomForestRegressor.pkl", "rb") as model_file:
-    model = pkl.load(model_file)
+model = loadParts("FifaRandomForestRegressor-", "./models/")
 
 # Load the scaler
 with open("scaler.pkl", "rb") as scaler_file:
