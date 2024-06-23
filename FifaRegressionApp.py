@@ -14,6 +14,10 @@ import streamlit as st
 import requests
 import pickle as pkl
 
+# Initialize session state
+if "button_clicked" not in st.session_state:
+    st.session_state.button_clicked = False
+    
 modelPath = Path("./models/FifaRandomForestRegressor.pkl")
 
 #function to load parts
@@ -62,7 +66,8 @@ def predict_overall(player_data):
     # Make predictions
     predicted_rating = model.predict(X_scaled)
 
-    margin_of_error = 1.96 * 0.44
+    #margin_of_error = 1.96 * 0.44
+    margin_of_error = 1.96 * 3.13
 
     lower_bound = predicted_rating - margin_of_error
     upper_bound = predicted_rating + margin_of_error
@@ -96,6 +101,9 @@ player_data = {
 
 # Predict button
 if st.button('Predict Player Rating'):
+    st.session_state.button_clicked = True
+
+if st.session_state.button_clicked:
     # Make prediction
     predicted_rating, lower_bound, upper_bound, confidence_score = predict_overall(player_data)
 
